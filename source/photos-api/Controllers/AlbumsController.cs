@@ -21,6 +21,12 @@ namespace photos_api.Controllers {
 
 		[HttpGet]
 		[Route("{albumID}")]
+		public Album GetAlbum(long albumID) {
+			return _db.Albums.Where(a => a.ID == albumID).First();
+		}
+
+		[HttpGet]
+		[Route("photos/{albumID}")]
 		public IEnumerable<Photo> GetAlbumPhotos(long albumID) {
 			return _db.Photos.Where(p => p.AlbumID == albumID).OrderBy(p => p.Title);
 		}
