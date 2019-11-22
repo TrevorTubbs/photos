@@ -1,0 +1,28 @@
+﻿@page "/photo-album/{AlbumID:long}"
+@inject HttpClient HttpClient
+@using System.Threading
+@using System.IO
+@using System.Collections.Generic
+@using photos_library.Models
+
+<h1>Photos</h1>
+@foreach (var photo in Photos) {
+	<div class="list-group-item">
+		<img src="@BasePath/@photo.Path" />
+		<div>@photo.Title</div>
+	</div>
+}
+
+@code {
+	[Parameter] public long AlbumID { get; set; }
+	private IEnumerable<Photo> Photos = new Photo[0];
+	private string BasePath = "http://localhost:5000/api/albums";
+
+	protected async override Task OnInitializedAsync() {
+		try {
+			Photos = await HttpClient.GetJsonAsync<List<Photo>>($"{BasePath}/{AlbumID}");
+		} catch {
+			Photos = new Photo[0];
+		}
+	}
+}

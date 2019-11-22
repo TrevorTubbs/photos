@@ -1,0 +1,25 @@
+﻿@page "/albums"
+@inject HttpClient HttpClient
+@using System.Threading
+@using System.IO
+@using System.Collections.Generic
+@using photos_library.Models
+
+<h1>Albums</h1>
+@foreach (var album in Albums) {
+	<NavLink class="nav-link" href="@album.Path">
+		<span class="oi oi-image" aria-hidden="true"></span> @album.Title
+	</NavLink>
+}
+
+@code {
+	private IEnumerable<Album> Albums = new Album[0];
+
+	protected async override Task OnInitializedAsync() {
+		try {
+			Albums = await HttpClient.GetJsonAsync<List<Album>>("http://localhost:5000/api/albums");
+		} catch {
+			Albums = new Album[0];
+		}
+	}
+}
