@@ -1,5 +1,6 @@
 ﻿using photos_library.Models;
 using System.IO;
+using System.Linq;
 
 namespace photos_api.Utilities {
 	public static class AlbumGenerator {
@@ -9,6 +10,9 @@ namespace photos_api.Utilities {
 			context.SaveChanges();
 
 			foreach (var file in info.EnumerateFiles()) {
+				if (!IsImageFile(file)) {
+					continue;
+				}
 				context.Photos.Add(new Photo() { 
 					AlbumID = albumEntity.Entity.ID,
 					Title = file.Name,
@@ -19,5 +23,10 @@ namespace photos_api.Utilities {
 			context.SaveChanges();
 			return albumEntity.Entity;			
 		}
+
+		private static bool IsImageFile(FileInfo info) {
+			return imageExtensions.Contains(info.Extension.ToLower());
+		}
+		private static string[] imageExtensions = { ".png", ".jpg", ".jpeg" };
 	}
 }
