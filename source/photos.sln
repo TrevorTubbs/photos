@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "photos-api", "photos-api\photos-api.csproj", "{6AD4ADC6-C968-494D-A493-361BC1054463}"
+	ProjectSection(ProjectDependencies) = postProject
+		{16957351-3449-4F3F-B890-437139132956} = {16957351-3449-4F3F-B890-437139132956}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "photos", "photos\photos.csproj", "{16957351-3449-4F3F-B890-437139132956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "photos-library", "photos-library\photos-library.csproj", "{8D54F9A9-3B49-427F-903B-4DC5C82AF2F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "photos-library", "photos-library\photos-library.csproj", "{8D54F9A9-3B49-427F-903B-4DC5C82AF2F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

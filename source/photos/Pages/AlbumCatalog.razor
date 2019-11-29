@@ -17,7 +17,7 @@
 
 	protected async override Task OnInitializedAsync() {
 		try {
-			Albums = await HttpClient.GetJsonAsync<List<Album>>("http://localhost:5000/api/albums");
+			Albums = await HttpClient.GetJsonAsync<List<Album>>("api/albums");
 		} catch {
 			Albums = new Album[0];
 		}

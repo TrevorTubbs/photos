@@ -18,12 +18,12 @@
 @code {
 	[Parameter] public long AlbumID { get; set; }
 	private IEnumerable<Photo> Photos = new Photo[0];
-	private const string BasePath = "http://localhost:5000/api/albums";
+	private const string BasePath = "api/albums";
 	private string Title { get; set; } = "Photos";
 
 	protected async override Task OnInitializedAsync() {
 		try {
-			Photos = await HttpClient.GetJsonAsync<List<Photo>>($"{BasePath}/photos/{AlbumID}");
+			Photos = await HttpClient.GetJsonAsync<IEnumerable<Photo>>($"{BasePath}/photos/{AlbumID}");
 		} catch {
 			Photos = new Photo[0];
 		}

@@ -3,6 +3,7 @@ using photos_library.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using photos_api.Utilities;
 
 namespace photos_api.Controllers {
 	[ApiController]
@@ -16,13 +17,20 @@ namespace photos_api.Controllers {
 
 		[HttpGet]
 		public IEnumerable<Album> Get() {
-			return _db.Albums.OrderBy(a => a.Title);
+			return GetAlbums();
 		}
 
 		[HttpGet]
 		[Route("{albumID}")]
 		public Album GetAlbum(long albumID) {
 			return _db.Albums.Where(a => a.ID == albumID).First();
+		}
+
+		[HttpPost]
+		[Route("create")]
+		public IEnumerable<Album> CreateAlbum([FromBody] string folderPath) {
+			AlbumGenerator.CreateFromDirectory(folderPath, _db);
+			return GetAlbums();
 		}
 
 		[HttpGet]
@@ -40,6 +48,10 @@ namespace photos_api.Controllers {
 			var bytes = System.IO.File.ReadAllBytes(info.FullName);
 
 			return File(bytes, $"image/{info.Extension.Substring(1).ToLower()}", info.Name);
+		}
+
+		private IEnumerable<Album> GetAlbums() {
+			return _db.Albums.OrderBy(a => a.Title);
 		}
 	}
 }

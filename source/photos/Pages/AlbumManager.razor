@@ -1,0 +1,54 @@
+﻿@page "/manage-albums"
+@inject HttpClient HttpClient
+@using System.Threading
+@using System.IO
+@using System.Collections.Generic
+@using photos_library.Models
+
+<h1>Albums</h1>
+@foreach (var album in Albums) {
+	<NavLink class="nav-link" href="@album.Path">
+		<span class="oi oi-image" aria-hidden="true"></span> @album.Title
+	</NavLink>
+}
+
+@if (AddingNewAlbum) {
+	<label>File Location</label>
+	<input type="text" @bind-value="@NewAlbumLocation" />
+	<button type="button" @onclick="@CreateNewAlbum">Create</button>
+} else {
+	<button type="button" @onclick="@ShowNewAlbum">New Album</button>
+}
+<div>@ErrorMessage</div>
+
+@code {
+	private IEnumerable<Album> Albums { get; set; } = new Album[0];
+	private bool AddingNewAlbum { get; set; } = false;
+	private string NewAlbumLocation { get; set; }
+	private string ErrorMessage { get; set; }
+
+	protected async override Task OnInitializedAsync() {
+		try {
+			Albums = await HttpClient.GetJsonAsync<IEnumerable<Album>>("api/albums");
+			ErrorMessage = null;
+		} catch (Exception ex) {
+			Albums = new Album[0];
+			ErrorMessage = ex.Message;
+		}
+	}
+
+	private void ShowNewAlbum() {
+		AddingNewAlbum = true;
+	}
+
+	private async void CreateNewAlbum() {
+		try {
+			Albums = await HttpClient.PostJsonAsync<IEnumerable<Album>>("api/albums/create", NewAlbumLocation);
+			AddingNewAlbum = false;
+			NewAlbumLocation = null;
+			ErrorMessage = null;
+		} catch (Exception ex) {
+			ErrorMessage = ex.Message;
+		}
+	}
+}
