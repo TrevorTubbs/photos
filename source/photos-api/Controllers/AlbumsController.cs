@@ -33,6 +33,22 @@ namespace photos_api.Controllers {
 			return GetAlbums();
 		}
 
+		[HttpPost]
+		[Route("delete/{albumID}")]
+		public IEnumerable<Album> DeleteAlbum(long albumID) {
+			_db.Albums.Remove(GetAlbum(albumID));
+			_db.SaveChanges();
+			return GetAlbums();
+		}
+
+		[HttpPost]
+		[Route("update")]
+		public IEnumerable<Album> CreateAlbum([FromBody] Album album) {
+			_db.Albums.Update(album);
+			_db.SaveChanges();
+			return GetAlbums();
+		}
+
 		[HttpGet]
 		[Route("photos/{albumID}")]
 		public IEnumerable<Photo> GetAlbumPhotos(long albumID) {
